@@ -66,5 +66,10 @@ const { title = 'Anaedo Global — Premium Tiles & Doors', description = 'Anaedo
   </head>
   <body>
     <slot />
+    <noscript>
+      <style>
+        [data-reveal], [data-scale-in], [data-stagger] > * { opacity: 1 !important; }
+      </style>
+    </noscript>
   </body>
 </html>

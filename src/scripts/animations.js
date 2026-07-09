@@ -24,7 +24,7 @@ ScrollTrigger.scrollerProxy(document.body, {
     if (arguments.length) {
       lenis.scrollTo(value, { immediate: true });
     }
-    return lenis.scroll;
+    return lenis.scroll || 0;
   },
   scrollLeft(value) {
     return 0;
@@ -39,47 +39,13 @@ ScrollTrigger.scrollerProxy(document.body, {
   },
 });
 
-const ready = (cb) => {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', cb);
-  } else {
-    cb();
-  }
-};
-
-window.addEventListener('load', () => ScrollTrigger.refresh());
-
-ready(() => {
-
-  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-
-  tl.from('[data-animate="hero-title"]', {
-    y: 80,
-    opacity: 0,
-    duration: 1,
-  })
-  .from('[data-animate="hero-subtitle"]', {
-    y: 40,
-    opacity: 0,
-    duration: 0.8,
-  }, '-=0.4')
-  .from('[data-animate="hero-cta"]', {
-    y: 30,
-    opacity: 0,
-    duration: 0.6,
-  }, '-=0.3')
-  .from('[data-animate="hero-image"]', {
-    scale: 0.9,
-    opacity: 0,
-    duration: 1.2,
-  }, '-=0.6');
-
+const initScrollAnimations = () => {
   gsap.utils.toArray('[data-reveal]').forEach((el) => {
     gsap.from(el, {
       scrollTrigger: {
         trigger: el,
-        start: 'top 85%',
-        toggleActions: 'play none none none',
+        start: 'top 82%',
+        once: true,
       },
       y: 60,
       opacity: 0,
@@ -89,17 +55,21 @@ ready(() => {
   });
 
   gsap.utils.toArray('[data-stagger]').forEach((parent) => {
-    const children = parent.children;
+    const children = gsap.utils.toArray(parent.children);
+    if (children.length === 0) return;
     gsap.from(children, {
       scrollTrigger: {
         trigger: parent,
-        start: 'top 80%',
-        toggleActions: 'play none none none',
+        start: 'top 82%',
+        once: true,
       },
       y: 40,
       opacity: 0,
-      duration: 0.6,
-      stagger: 0.15,
+      duration: 0.7,
+      stagger: {
+        each: 0.12,
+        from: 'start',
+      },
       ease: 'power3.out',
     });
   });
@@ -120,12 +90,13 @@ ready(() => {
   const counters = gsap.utils.toArray('[data-count]');
   counters.forEach((el) => {
     const target = parseInt(el.dataset.count, 10);
+    if (isNaN(target)) return;
     const suffix = el.dataset.suffix || '';
     gsap.from(el, {
       scrollTrigger: {
         trigger: el,
         start: 'top 85%',
-        toggleActions: 'play none none none',
+        once: true,
       },
       textContent: 0,
       duration: 2,
@@ -144,8 +115,8 @@ ready(() => {
     gsap.from(el, {
       scrollTrigger: {
         trigger: el,
-        start: 'top 85%',
-        toggleActions: 'play none none none',
+        start: 'top 82%',
+        once: true,
       },
       scale: 0.85,
       opacity: 0,
@@ -153,4 +124,34 @@ ready(() => {
       ease: 'power3.out',
     });
   });
-});
+};
+
+if (document.readyState === 'complete') {
+  initScrollAnimations();
+} else {
+  window.addEventListener('load', initScrollAnimations);
+}
+
+const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+heroTl
+  .from('[data-animate="hero-title"]', {
+    y: 80,
+    opacity: 0,
+    duration: 1,
+  })
+  .from('[data-animate="hero-subtitle"]', {
+    y: 40,
+    opacity: 0,
+    duration: 0.8,
+  }, '-=0.4')
+  .from('[data-animate="hero-cta"]', {
+    y: 30,
+    opacity: 0,
+    duration: 0.6,
+  }, '-=0.3')
+  .from('[data-animate="hero-image"]', {
+    scale: 0.9,
+    opacity: 0,
+    duration: 1.2,
+  }, '-=0.6');

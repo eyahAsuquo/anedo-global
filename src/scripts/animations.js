@@ -19,7 +19,37 @@ gsap.ticker.add((time) => {
 
 gsap.ticker.lagSmoothing(0);
 
-document.addEventListener('DOMContentLoaded', () => {
+ScrollTrigger.scrollerProxy(document.body, {
+  scrollTop(value) {
+    if (arguments.length) {
+      lenis.scrollTo(value, { immediate: true });
+    }
+    return lenis.scroll;
+  },
+  scrollLeft(value) {
+    return 0;
+  },
+  getBoundingClientRect() {
+    return {
+      top: 0,
+      left: 0,
+      width: window.innerWidth,
+      height: window.innerHeight,
+    };
+  },
+});
+
+const ready = (cb) => {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', cb);
+  } else {
+    cb();
+  }
+};
+
+window.addEventListener('load', () => ScrollTrigger.refresh());
+
+ready(() => {
 
   const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 

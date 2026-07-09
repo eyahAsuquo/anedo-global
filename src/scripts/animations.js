@@ -39,7 +39,7 @@ ScrollTrigger.scrollerProxy(document.body, {
   },
 });
 
-const run = () => {
+const init = () => {
   const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
   tl.from('[data-animate="hero-title"]', { y: 80, opacity: 0, duration: 1 })
@@ -49,23 +49,21 @@ const run = () => {
 
   gsap.utils.toArray('[data-reveal]').forEach((el) => {
     gsap.from(el, {
-      scrollTrigger: { trigger: el, start: 'top 82%', once: true },
-      y: 60,
+      scrollTrigger: { trigger: el, start: 'top 85%' },
+      y: 40,
       opacity: 0,
-      duration: 0.9,
+      duration: 0.8,
       ease: 'power3.out',
     });
   });
 
-  gsap.utils.toArray('[data-stagger]').forEach((parent) => {
-    const children = gsap.utils.toArray(parent.children);
-    if (children.length === 0) return;
-    const st = gsap.timeline({
-      scrollTrigger: { trigger: parent, start: 'top 85%', once: true },
-      defaults: { duration: 0.6, ease: 'power3.out' },
-    });
-    children.forEach((child, i) => {
-      st.from(child, { y: 40, opacity: 0 }, i * 0.12);
+  gsap.utils.toArray('[data-stagger]').forEach((el) => {
+    gsap.from(el, {
+      scrollTrigger: { trigger: el, start: 'top 85%' },
+      y: 40,
+      opacity: 0,
+      duration: 0.8,
+      ease: 'power3.out',
     });
   });
 
@@ -82,7 +80,7 @@ const run = () => {
     if (isNaN(target)) return;
     const suffix = el.dataset.suffix || '';
     gsap.from(el, {
-      scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+      scrollTrigger: { trigger: el, start: 'top 85%' },
       textContent: 0,
       duration: 2,
       ease: 'power2.out',
@@ -96,17 +94,14 @@ const run = () => {
 
   gsap.utils.toArray('[data-scale-in]').forEach((el) => {
     gsap.from(el, {
-      scrollTrigger: { trigger: el, start: 'top 82%', once: true },
+      scrollTrigger: { trigger: el, start: 'top 85%' },
       scale: 0.85,
       opacity: 0,
       duration: 0.8,
       ease: 'power3.out',
     });
   });
-};
 
-const init = () => {
-  run();
   window.addEventListener('load', () => ScrollTrigger.refresh());
   setTimeout(() => ScrollTrigger.refresh(), 500);
 };

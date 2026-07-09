@@ -1,0 +1,58 @@
+<nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-gray-100/50" role="navigation" aria-label="Main navigation">
+  <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+    <a href="/" class="flex items-center gap-2 text-xl font-bold tracking-tight text-gray-900" aria-label="Anaedo Global Home">
+      <span class="font-display text-2xl text-brand-600">AG</span>
+      <span class="hidden sm:inline font-display">Anaedo <span class="text-brand-600">Global</span></span>
+    </a>
+
+    <button
+      id="mobile-menu-btn"
+      class="flex h-10 w-10 items-center justify-center rounded-lg text-gray-700 hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 lg:hidden"
+      aria-label="Toggle navigation menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+      <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x hidden"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+
+    <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 glass border-b border-gray-100 pb-4 pt-2 lg:static lg:flex lg:items-center lg:border-none lg:bg-transparent lg:p-0 lg:backdrop-blur-none">
+      <ul class="flex flex-col gap-1 px-4 lg:flex-row lg:items-center lg:gap-6 lg:px-0">
+        <li><a href="#products" class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:text-brand-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 lg:p-0">Products</a></li>
+        <li><a href="#about" class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:text-brand-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 lg:p-0">About</a></li>
+        <li><a href="#services" class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:text-brand-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 lg:p-0">Services</a></li>
+        <li><a href="#testimonials" class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:text-brand-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 lg:p-0">Testimonials</a></li>
+        <li><a href="#contact" class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:text-brand-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 lg:hidden">Contact</a></li>
+      </ul>
+      <div class="mt-2 px-4 lg:ml-8 lg:mt-0 lg:px-0">
+        <a href="#contact" class="btn-primary hidden lg:inline-flex text-sm">Get a Quote</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  const menuIcon = document.getElementById('menu-icon');
+  const closeIcon = document.getElementById('close-icon');
+
+  if (btn) {
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', !expanded);
+      menu?.classList.toggle('hidden');
+      menuIcon?.classList.toggle('hidden');
+      closeIcon?.classList.toggle('hidden');
+    });
+  }
+
+  document.querySelectorAll('#mobile-menu a').forEach((link) => {
+    link.addEventListener('click', () => {
+      menu?.classList.add('hidden');
+      menuIcon?.classList.remove('hidden');
+      closeIcon?.classList.add('hidden');
+      if (btn) btn.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>

@@ -1,0 +1,70 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+}
+
+import '../styles/global.css';
+
+const { title = 'Anaedo Global — Premium Tiles & Doors', description = 'Anaedo Global brings you premium-quality tiles and doors for residential and commercial projects. Transform your space with elegance and durability.', ogImage = '/og-image.jpg' } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://anaedoglobal.com" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:url" content="https://anaedoglobal.com" />
+    <meta property="og:site_name" content="Anaedo Global" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json" set:html={`
+      {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "Anaedo Global",
+        "description": "Premium tiles and doors supplier for residential and commercial projects",
+        "url": "https://anaedoglobal.com",
+        "telephone": "+2348061586273",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "96 Forestry Rd, Avbiama",
+          "addressLocality": "Benin City",
+          "addressRegion": "Edo",
+          "postalCode": "300102",
+          "addressCountry": "NG"
+        },
+        "image": "https://anaedoglobal.com/og-image.jpg",
+        "priceRange": "$$"
+      }
+    `} />
+
+    <!-- Google Fonts (preloaded) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

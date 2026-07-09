@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://anaedoglobal.com/sitemap-index.xml

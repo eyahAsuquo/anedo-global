@@ -39,14 +39,17 @@ ScrollTrigger.scrollerProxy(document.body, {
   },
 });
 
-const initScrollAnimations = () => {
+const run = () => {
+  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+  tl.from('[data-animate="hero-title"]', { y: 80, opacity: 0, duration: 1 })
+    .from('[data-animate="hero-subtitle"]', { y: 40, opacity: 0, duration: 0.8 }, '-=0.4')
+    .from('[data-animate="hero-cta"]', { y: 30, opacity: 0, duration: 0.6 }, '-=0.3')
+    .from('[data-animate="hero-image"]', { scale: 0.9, opacity: 0, duration: 1.2 }, '-=0.6');
+
   gsap.utils.toArray('[data-reveal]').forEach((el) => {
     gsap.from(el, {
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 82%',
-        once: true,
-      },
+      scrollTrigger: { trigger: el, start: 'top 82%', once: true },
       y: 60,
       opacity: 0,
       duration: 0.9,
@@ -57,47 +60,29 @@ const initScrollAnimations = () => {
   gsap.utils.toArray('[data-stagger]').forEach((parent) => {
     const children = gsap.utils.toArray(parent.children);
     if (children.length === 0) return;
-    gsap.from(children, {
-      scrollTrigger: {
-        trigger: parent,
-        start: 'top 82%',
-        once: true,
-      },
-      y: 40,
-      opacity: 0,
-      duration: 0.7,
-      stagger: {
-        each: 0.12,
-        from: 'start',
-      },
-      ease: 'power3.out',
+    const st = gsap.timeline({
+      scrollTrigger: { trigger: parent, start: 'top 85%', once: true },
+      defaults: { duration: 0.6, ease: 'power3.out' },
+    });
+    children.forEach((child, i) => {
+      st.from(child, { y: 40, opacity: 0 }, i * 0.12);
     });
   });
 
   gsap.utils.toArray('[data-parallax]').forEach((el) => {
     gsap.to(el, {
-      scrollTrigger: {
-        trigger: el,
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: 1.5,
-      },
+      scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: 1.5 },
       yPercent: -20,
       ease: 'none',
     });
   });
 
-  const counters = gsap.utils.toArray('[data-count]');
-  counters.forEach((el) => {
+  gsap.utils.toArray('[data-count]').forEach((el) => {
     const target = parseInt(el.dataset.count, 10);
     if (isNaN(target)) return;
     const suffix = el.dataset.suffix || '';
     gsap.from(el, {
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 85%',
-        once: true,
-      },
+      scrollTrigger: { trigger: el, start: 'top 85%', once: true },
       textContent: 0,
       duration: 2,
       ease: 'power2.out',
@@ -105,19 +90,13 @@ const initScrollAnimations = () => {
         const val = Math.round(parseFloat(el.textContent));
         el.textContent = val + suffix;
       },
-      onComplete: () => {
-        el.textContent = target + suffix;
-      },
+      onComplete: () => { el.textContent = target + suffix; },
     });
   });
 
   gsap.utils.toArray('[data-scale-in]').forEach((el) => {
     gsap.from(el, {
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 82%',
-        once: true,
-      },
+      scrollTrigger: { trigger: el, start: 'top 82%', once: true },
       scale: 0.85,
       opacity: 0,
       duration: 0.8,
@@ -126,32 +105,14 @@ const initScrollAnimations = () => {
   });
 };
 
-if (document.readyState === 'complete') {
-  initScrollAnimations();
+const init = () => {
+  run();
+  window.addEventListener('load', () => ScrollTrigger.refresh());
+  setTimeout(() => ScrollTrigger.refresh(), 500);
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
 } else {
-  window.addEventListener('load', initScrollAnimations);
+  init();
 }
-
-const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-
-heroTl
-  .from('[data-animate="hero-title"]', {
-    y: 80,
-    opacity: 0,
-    duration: 1,
-  })
-  .from('[data-animate="hero-subtitle"]', {
-    y: 40,
-    opacity: 0,
-    duration: 0.8,
-  }, '-=0.4')
-  .from('[data-animate="hero-cta"]', {
-    y: 30,
-    opacity: 0,
-    duration: 0.6,
-  }, '-=0.3')
-  .from('[data-animate="hero-image"]', {
-    scale: 0.9,
-    opacity: 0,
-    duration: 1.2,
-  }, '-=0.6');

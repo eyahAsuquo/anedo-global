@@ -59,12 +59,3 @@
     @apply backdrop-blur-md bg-white/80;
   }
 }
-
-[data-reveal],
-[data-scale-in] {
-  opacity: 0;
-}
-
-[data-stagger] > * {
-  opacity: 0;
-}
